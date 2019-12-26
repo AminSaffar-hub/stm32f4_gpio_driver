@@ -229,6 +229,34 @@ if (BitVal != 0x0)
 else 
   *output_register &= ~GPIO_Pin; 
 }
+/**
+  * @brief  Sets or clears the selected data port bit using bsrr register.
+  * @param  gpio_x: where x can be (A..G) to select the GPIO peripheral.
+  * @param  pin: specifies the port bit to be written.
+  *   This parameter can be one of GPIO_Pin_x where x can be (0..15).
+  * @param  BitVal: specifies the value to be written to the selected bit.
+  *   This parameter can be one of the BitAction enum values:
+  *     @arg Bit_RESET: to clear the port pin
+  *     @arg Bit_SET: to set the port pin
+  * @retval None
+  */
+void GPIO_WriteBit_BSRR(unsigned int * gpio_x, unsigned  short int pin, char BitVal)
+{
+  unsigned int *BSRR_register= (unsigned int *) (gpio_x + BSRR);
+  if (BitVal != 0x0)
+  { 
+    int set_mask = (1<<pin);
+    *BSRR_register |= set_mask;
+  }
+  else
+  {
+    int reset_set_mask = (1<<pin);
+    *BSRR_register &= ~reset_set_mask; // Note: If both BSx and BRx are set, BSx has priority
+    int reset_mask = (1 << (pin+16));
+    *BSRR_register |= reset_mask ;
+  }
+    
+}
 
 /**
   * @brief  Writes data to the specified GPIO data port.

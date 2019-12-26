@@ -30,6 +30,7 @@
 #define PUPDR      0x03
 #define IDR        0x04
 #define ODR        0x05
+#define BSRR       0x06
 
     
     
